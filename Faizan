@@ -250,3 +250,314 @@ loadstring(game:HttpGet(("https://raw.githubusercontent.com/icuck/Sword-Simulato
 
 --creator: iHavoc101
                                ---------ADMIN WS2-----------
+--[[
+
+WARNING: The commands('cmds', 'admin' and 'unadmin' will make you chat)
+
+To kill silently type '/e kill' (it will kill everybody)[/align]
+
+[align=center]You cant kill the people that have force field on
+
+--------------------------
+
+Prefix --> ';'
+
+[0]CMDS:
+
+[1]kill (me/plr/others/all)
+
+[2]admin (all/plr)
+
+[3]unadmin (all/plr)
+
+[4]af (autofarm)
+
+[5]saf (stop autofarm)
+
+[6]cmds (chats the cmds list)
+
+--------------------------
+
+If you found any bug please go to this thread and let me know it!
+
+https://v3rmillion.net/showthread.php?tid=690888
+
+--]]
+
+local isAdmin = {[game.Players.LocalPlayer.Name] = true, ["FRIEND1"] = true, ["FRIEND2"] = true} --Admins
+
+local lplr = game.Players.LocalPlayer.Name
+
+local au = false
+
+Owner = game:GetService("Players").LocalPlayer
+
+game:GetService("StarterGui"):SetCore("SendNotification", {
+
+Title = "Sword Simulator Admin";
+
+Text = "Enjoy the script while it lasts!";})
+
+function GetPlayer(String) -- Credits to Timeless/xFunnieuss for the get player by string function
+
+   local Found = {}
+
+   for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+
+       if v.Name:lower():sub(1, #String) == String:lower() then
+
+           table.insert(Found,v)
+
+       end
+
+   end    
+
+return Found    
+
+end
+
+local function AF()
+
+au = true
+
+game:GetService('Players').LocalPlayer.Character.Humanoid:EquipTool(game.Players[lplr].Backpack["sword"])
+
+while au do
+
+  game.Workspace[lplr].sword.Handle.up.RemoteEvent:FireServer() wait(.1)
+
+  if game.Players[lplr].Backpack["sword"] then
+
+     game:GetService('Players').LocalPlayer.Character.Humanoid:EquipTool(game.Players[lplr].Backpack["sword"])
+
+  end
+
+end
+
+end
+
+local function KA()
+
+game:GetService('Players').LocalPlayer.Character.Humanoid:EquipTool(game.Players[lplr].Backpack["sword"])
+
+for i,v in ipairs(game.Players:GetPlayers())do
+
+game.Workspace[lplr].sword.Handle.dmg.RemoteEvent:FireServer(workspace[v.Name].Humanoid, 9999999999999999999999)
+
+end end
+
+local function KO()
+
+game:GetService('Players').LocalPlayer.Character.Humanoid:EquipTool(game.Players[lplr].Backpack["sword"])
+
+for i,v in ipairs(game.Players:GetPlayers())do
+
+if v.Name ~= game.Players.LocalPlayer.Name then
+
+game.Workspace[lplr].sword.Handle.dmg.RemoteEvent:FireServer(workspace[v.Name].Humanoid, 9999999999999999999999)
+
+end end
+
+end
+
+print'Loaded'
+
+function onChatted(message, player)
+
+   if message:sub(1, 6) == ";kill " and isAdmin[player.Name] then
+
+       if string.sub(message, 7) == "all" then
+
+           KA()
+
+       elseif string.sub(message, 7) == "me" then
+
+           game:GetService('Players').LocalPlayer.Character.Humanoid:EquipTool(game.Players[lplr].Backpack["sword"])
+
+           ggame.Workspace[lplr].sword.Handle.dmg.RemoteEvent:FireServer(workspace[v.Name].Humanoid, 9999999999999999999999)
+
+       elseif string.sub(message, 7) == "others" then
+
+           if player.Name == Owner.Name then
+
+               KO()
+
+           else
+
+               game:GetService('Players').LocalPlayer.Character.Humanoid:EquipTool(game.Players[lplr].Backpack["sword"])
+
+               for i,v in ipairs(game.Players:GetPlayers())do
+
+               if v.Name ~= player.Name then
+
+               game.Workspace[lplr].sword.Handle.dmg.RemoteEvent:FireServer(workspace[v.Name].Humanoid, 9999999999999999999999)
+
+               end end
+
+           end
+
+       else
+
+           game:GetService('Players').LocalPlayer.Character.Humanoid:EquipTool(game.Players[lplr].Backpack["sword"])
+
+           for i,v in pairs(GetPlayer(string.sub(message, 7)))do
+
+           local plr = v.Name
+
+           for i,p in ipairs(game.Players:GetPlayers())do
+
+           if p.Name ~= game.Players.LocalPlayer.Name then
+
+           game.Workspace[lplr].sword.Handle.dmg.RemoteEvent:FireServer(workspace[v.Name].Humanoid, 9999999999999999999999)
+
+           end end end
+
+       end
+
+   end
+
+   if message:sub(1, 7) == "/e kill" and isAdmin[player.Name] then
+
+       KA()
+
+   end
+
+   if message:sub(1, 6) == ";cmds" then
+
+       if player.Name == Owner.Name then
+
+          wait(0.2)
+
+          game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("[System]CMDS: [1]kill(me/plr/others/all), [2]admin(all/plr), [3]unadmin(all/plr), [4]af(autofarm), [5]saf(stop autofarm), [6]cmds", "All")
+
+       elseif isAdmin[player.Name] and player.Name ~= Owner.Name then
+
+          wait(0.2)
+
+          game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("[System]CMDS: [1]kill(me/plr/others/all), [2]admin(all/plr), [3]unadmin(all/plr), [4]cmds", "All")
+
+       end
+
+   end
+
+   if message:sub(1, 7) == ";admin " and isAdmin[player.Name] then
+
+       if string.sub(message, 8) == "all" and isAdmin[Owner.Name] then
+
+           if isAdmin[Owner.Name] then
+
+               for i,plrs in ipairs(game:GetService('Players'):GetChildren())do
+
+               isAdmin[plrs.Name] = {true}
+
+               end
+
+               wait(0.2)
+
+               game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("[System]Everyone is now Admin!", "All")
+
+           end
+
+       else
+
+           for i,v in pairs(GetPlayer(string.sub(message, 8)))do
+
+           local plr = v.Name  
+
+           if  isAdmin[plr] then
+
+               game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("[System]"..plr.." is already Admin!", "All")
+
+           else
+
+               isAdmin[plr] = {true}
+
+               wait(0.2)
+
+               game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("[System]"..plr.." is now Admin!", "All")
+
+           end
+
+           end
+
+       end
+
+   end
+
+   
+
+   if message:sub(1, 9) == ";unadmin " and isAdmin[player.Name] then
+
+       if string.sub(message, 10) == "all" then
+
+           if isAdmin[Owner.Name] then
+
+               for i,plrs in ipairs(game:GetService('Players'):GetPlayers())do
+
+                   isAdmin[plrs.Name] = false
+
+                   isAdmin[Owner.Name] = true
+
+               end
+
+               wait(0.2)
+
+               game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("[System]Everyone is no longer Admin!", "All")
+
+           end
+
+       else
+
+           for i,v in pairs(GetPlayer(string.sub(message, 10)))do
+
+           local plr = v.Name
+
+           if plr == Owner.Name then
+
+               game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("[System]Error, this player is the Owner!", "All")
+
+           else
+
+               isAdmin[plr] = false
+
+               wait(0.2)
+
+               game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("[System]"..plr.." is no longer Admin!", "All")
+
+           end
+
+           end
+
+       end
+
+   end
+
+   if message:sub(1, 3) == ";af" and player.Name == Owner.Name then
+
+       AF()
+
+   end
+
+   if message:sub(1, 4) == ";saf" and player.Name == Owner.Name then
+
+       au = false
+
+   end
+
+end
+
+Players = game:GetService("Players")
+
+for i, player in pairs(Players:GetPlayers()) do
+
+   player.Chatted:connect(function(message) onChatted(message, player) end)
+
+end
+
+--Check if someone joined
+
+game.Players.PlayerAdded:connect(function(player)
+
+   player.Chatted:connect(function(message) onChatted(message, player) end)
+
+end)
